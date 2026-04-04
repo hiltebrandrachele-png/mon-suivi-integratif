@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Suivi Intégratif</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sage: #7a9e7e;
+  --sage-light: #a8c5ac;
+  --sage-pale: #e8f0e9;
+  --terracotta: #c4785a;
+  --terracotta-light: #e8a88e;
+  --cream: #f7f4ef;
+  --warm-white: #fdfcf9;
+  --charcoal: #2c2c2c;
+  --mid: #6b6b6b;
+  --border: #ddd8d0;
+  --gold: #c9a84c;
+  --blue-calm: #6b8fa3;
+  --lavender: #9b8db4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--sage);
+  letter-spacing: 0.02em;
+}
+
+.logo span {
+  color: var(--terracotta);
+  font-style: italic;
+}
+
+.date-badge {
+  font-size: 0.78rem;
+  color: var(--mid);
+  background: var(--sage-pale);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* NAV TABS */
+nav {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  overflow-x: auto;
+  padding: 0 16px;
+  gap: 0;
+}
+
+nav::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 14px 18px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--mid);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tab:hover { color: var(--sage); }
+.tab.active { color: var(--sage); border-bottom-color: var(--sage); }
+.tab .icon { font-size: 1rem; }
+
+/* MAIN */
+main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+/* CARDS */
+.card {
+  background: var(--warm-white);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-subtitle {
+  font-size: 0.78rem;
+  color: var(--mid);
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+/* FORM ELEMENTS */
+label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--mid);
+  margin-bottom: 4px;
+  margin-top: 12px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  background: var(--cream);
+  color: var(--charcoal);
+  outline: none;
+  transition: border 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--sage);
+  background: white;
+}
+
+textarea { resize: vertical; min-height: 70px; }
+
+/* SYMPTOM SCALE */
+.scale-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.scale-label { font-size: 0.82rem; color: var(--charcoal); flex: 1; }
+
+.scale-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--mid);
+  transition: all 0.15s;
+}
+
+.dot:hover { border-color: var(--sage); }
+.dot.selected-0 { background: #e8f5e9; border-color: #66bb6a; color: #2e7d32; }
+.dot.selected-1 { background: #fff9e6; border-color: #ffd54f; color: #f57f17; }
+.dot.selected-2 { background: #fff3e0; border-color: #ffb74d; color: #e65100; }
+.dot.selected-3 { background: #fce4ec; border-color: #f48fb1; color: #880e4f; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: var(--sage);
+  color: white;
+  box-shadow: 0 2px 8px rgba(122,158,126,0.3);
+}
+.btn-primary:hover { background: #6a8e6e; transform: translateY(-1px); }
+
+.btn-secondary {
+  background: var(--cream);
+  color: var(--charcoal);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--sage-pale); border-color: var(--sage); }
+
+.btn-terracotta {
+  background: var(--terracotta);
+  color: white;
+}
+.btn-terracotta:hover { background: #b06b50; }
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* AI RESPONSE */
+.ai-response {
+  background: linear-gradient(135deg, #f0f5f0 0%, #f5f0ea 100%);
+  border: 1px solid var(--sage-light);
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 14px;
+  display: none;
+  position: relative;
+}
+
+.ai-response.visible { display: block; animation: fadeIn 0.4s ease; }
+
+.ai-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  color: var(--sage);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ai-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--sage);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.ai-text {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--charcoal);
+}
+
+.ai-text h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--sage);
+  margin: 10px 0 4px;
+}
+
+.ai-text p { margin-bottom: 8px; }
+
+.loading-dots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.loading-dots span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--sage);
+  animation: bounce 1.2s infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce { 0%,80%,100%{transform:scale(0.8);opacity:0.5} 40%{transform:scale(1.2);opacity:1} }
+
+/* TAGS */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 2px;
+}
+.tag-sage { background: var(--sage-pale); color: var(--sage); }
+.tag-terra { background: #f9ece7; color: var(--terracotta); }
+.tag-gold { background: #fdf6e3; color: var(--gold); }
+.tag-blue { background: #eaf0f4; color: var(--blue-calm); }
+.tag-lav { background: #f3f0f8; color: var(--lavender); }
+
+/* BILAN TABLE */
+.bio-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.84rem;
+}
+
+.bio-table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: var(--sage-pale);
+  color: var(--sage);
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.bio-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--charcoal);
+  vertical-align: top;
+}
+
+.bio-table tr:last-child td { border-bottom: none; }
+
+.val-normal { color: #388e3c; font-weight: 500; }
+.val-elevated { color: var(--terracotta); font-weight: 500; }
+.val-unknown { color: var(--mid); font-style: italic; }
+
+/* HISTORY LIST */
+.history-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: white;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.history-item:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+
+.history-date {
+  font-size: 0.75rem;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+
+.history-summary {
+  font-size: 0.85rem;
+  color: var(--charcoal);
+}
+
+/* WELLBEING WHEEL */
+.wheel-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.wheel-item {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wheel-icon { font-size: 1.4rem; }
+
+.wheel-info { flex: 1; }
+
+.wheel-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin-bottom: 4px;
+}
+
+.wheel-bar {
+  height: 5px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.wheel-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sage), var(--sage-light));
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+/* TIPS */
+.tip-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.84rem;
+}
+.tip-row:last-child { border-bottom: none; }
+.tip-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+/* SECTION TITLE */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+}
+
+.section-intro {
+  font-size: 0.83rem;
+  color: var(--mid);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* CHECKBOX GRID */
+.check-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: all 0.15s;
+}
+
+.check-item input[type="checkbox"] { accent-color: var(--sage); cursor: pointer; }
+.check-item:hover { background: var(--sage-pale); border-color: var(--sage-light); }
+
+/* NOTIFICATION */
+.notif {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--charcoal);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-size: 0.84rem;
+  transition: transform 0.3s;
+  z-index: 999;
+}
+.notif.show { transform: translateX(-50%) translateY(0); }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .check-grid { grid-template-columns: 1fr; }
+  .wheel-container { grid-template-columns: 1fr; }
+}
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+/* SMALL INFO BOX */
+.info-box {
+  background: #eaf4fb;
+  border-left: 3px solid var(--blue-calm);
+  border-radius: 0 10px 10px 0;
+  padding: 10px 14px;
+  font-size: 0.81rem;
+  color: #3a5f70;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.warn-box {
+  background: #fdf3ef;
+  border-left: 3px solid var(--terracotta-light);
+  border-radius: 0 10px 10px 0;
+  padding: 10px 14px;
+  font-size: 0.81rem;
+  color: #7a4030;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* SYMPTOM TREND */
+.trend-mini {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 32px;
+}
+.trend-bar {
+  width: 8px;
+  border-radius: 3px 3px 0 0;
+  background: var(--sage-light);
+  transition: height 0.4s;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Mon Suivi <span>Intégratif</span></div>
+  <div class="date-badge" id="headerDate"></div>
+  <div id="apiStatus" onclick="showApiModal()" style="cursor:pointer;font-size:0.75rem;padding:4px 10px;border-radius:20px;background:#fce4ec;color:#880e4f;">⚡ IA inactive</div>
+</header>
+
+<nav>
+  <div class="tab active" data-tab="today" onclick="switchTab('today')"><span class="icon">🌿</span> Aujourd'hui</div>
+  <div class="tab" data-tab="symptoms" onclick="switchTab('symptoms')"><span class="icon">📊</span> Symptômes</div>
+  <div class="tab" data-tab="treatments" onclick="switchTab('treatments')"><span class="icon">💊</span> Traitements</div>
+  <div class="tab" data-tab="biology" onclick="switchTab('biology')"><span class="icon">🔬</span> Biologie</div>
+  <div class="tab" data-tab="lifestyle" onclick="switchTab('lifestyle')"><span class="icon">☀️</span> Hygiène de vie</div>
+  <div class="tab" data-tab="advisor" onclick="switchTab('advisor')"><span class="icon">✨</span> Conseil IA</div>
+  <div class="tab" data-tab="history" onclick="switchTab('history')"><span class="icon">📅</span> Historique</div>
+</nav>
+
+<main>
+
+<!-- ===== AUJOURD'HUI ===== -->
+<div class="section active" id="section-today">
+  <div class="section-title">Bonjour ✨</div>
+  <p class="section-intro">Prends un moment pour noter comment tu te sens ce matin. Chaque entrée construit une image précieuse de ton évolution.</p>
+
+  <div class="card">
+    <div class="card-title">🌡️ Ressenti global du jour</div>
+    <div class="card-subtitle">Évalue chaque dimension de 0 (très bien) à 3 (difficile)</div>
+
+    <div id="dailyScores">
+      <div class="scale-row">
+        <div class="scale-label">Douleurs articulaires</div>
+        <div class="scale-dots" data-key="pain">
+          <div class="dot" onclick="setScore(this,'pain',0)">0</div>
+          <div class="dot" onclick="setScore(this,'pain',1)">1</div>
+          <div class="dot" onclick="setScore(this,'pain',2)">2</div>
+          <div class="dot" onclick="setScore(this,'pain',3)">3</div>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-label">Raideur matinale</div>
+        <div class="scale-dots" data-key="stiffness">
+          <div class="dot" onclick="setScore(this,'stiffness',0)">0</div>
+          <div class="dot" onclick="setScore(this,'stiffness',1)">1</div>
+          <div class="dot" onclick="setScore(this,'stiffness',2)">2</div>
+          <div class="dot" onclick="setScore(this,'stiffness',3)">3</div>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-label">Fatigue générale</div>
+        <div class="scale-dots" data-key="fatigue">
+          <div class="dot" onclick="setScore(this,'fatigue',0)">0</div>
+          <div class="dot" onclick="setScore(this,'fatigue',1)">1</div>
+          <div class="dot" onclick="setScore(this,'fatigue',2)">2</div>
+          <div class="dot" onclick="setScore(this,'fatigue',3)">3</div>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-label">Transit intestinal</div>
+        <div class="scale-dots" data-key="gut">
+          <div class="dot" onclick="setScore(this,'gut',0)">0</div>
+          <div class="dot" onclick="setScore(this,'gut',1)">1</div>
+          <div class="dot" onclick="setScore(this,'gut',2)">2</div>
+          <div class="dot" onclick="setScore(this,'gut',3)">3</div>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-label">Humeur & énergie mentale</div>
+        <div class="scale-dots" data-key="mood">
+          <div class="dot" onclick="setScore(this,'mood',0)">0</div>
+          <div class="dot" onclick="setScore(this,'mood',1)">1</div>
+          <div class="dot" onclick="setScore(this,'mood',2)">2</div>
+          <div class="dot" onclick="setScore(this,'mood',3)">3</div>
+        </div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-label">Qualité du sommeil (la nuit passée)</div>
+        <div class="scale-dots" data-key="sleep">
+          <div class="dot" onclick="setScore(this,'sleep',0)">0</div>
+          <div class="dot" onclick="setScore(this,'sleep',1)">1</div>
+          <div class="dot" onclick="setScore(this,'sleep',2)">2</div>
+          <div class="dot" onclick="setScore(this,'sleep',3)">3</div>
+        </div>
+      </div>
+    </div>
+
+    <label>Note libre du jour</label>
+    <textarea id="dailyNote" placeholder="Remarques, événements particuliers, ressenti global…"></textarea>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveToday()">💾 Enregistrer la journée</button>
+      <button class="btn btn-secondary" onclick="getQuickInsight()">✨ Analyse rapide</button>
+    </div>
+
+    <div class="ai-response" id="quickInsightBox">
+      <div class="ai-header"><div class="ai-dot"></div> Analyse intégrative</div>
+      <div class="ai-text" id="quickInsightText"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📈 Tendance 7 jours</div>
+    <div class="card-subtitle">Vue rapide de ton évolution récente</div>
+    <div id="trendArea" style="font-size:0.83rem;color:var(--mid);padding:10px 0;">
+      Enregistre quelques journées pour voir apparaître ta tendance.
+    </div>
+  </div>
+</div>
+
+<!-- ===== SYMPTÔMES ===== -->
+<div class="section" id="section-symptoms">
+  <div class="section-title">Tableau des symptômes</div>
+  <p class="section-intro">Renseigne ici les symptômes spécifiques à la PPR et à l'intestin irritable pour un suivi plus fin.</p>
+
+  <div class="card">
+    <div class="card-title">🦴 PPR — Pseudo-polyarthrite rhizomélique</div>
+    <div class="card-subtitle">La PPR touche surtout les épaules, la nuque, les hanches et les cuisses</div>
+
+    <label>Localisation des douleurs aujourd'hui</label>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="loc" value="epaules"> Épaules</label>
+      <label class="check-item"><input type="checkbox" name="loc" value="nuque"> Nuque / cou</label>
+      <label class="check-item"><input type="checkbox" name="loc" value="hanches"> Hanches</label>
+      <label class="check-item"><input type="checkbox" name="loc" value="cuisses"> Cuisses (rhizomélique)</label>
+      <label class="check-item"><input type="checkbox" name="loc" value="genoux"> Genoux</label>
+      <label class="check-item"><input type="checkbox" name="loc" value="chevilles"> Chevilles / pieds</label>
+      <label class="check-item"><input type="checkbox" name="loc" value="lombaires"> Bas du dos</label>
+      <label class="check-item"><input type="checkbox" name="loc" value="mains"> Mains / poignets</label>
+    </div>
+
+    <label>Durée de la raideur matinale</label>
+    <select id="stiffDuration">
+      <option value="">-- Choisir --</option>
+      <option value="0">Aucune</option>
+      <option value="15">< 15 min</option>
+      <option value="30">15–30 min</option>
+      <option value="60">30–60 min</option>
+      <option value="90">> 1 heure</option>
+    </select>
+    <div class="info-box">💡 <strong>Pourquoi c'est important :</strong> Dans la PPR, une raideur matinale de plus de 45 min est un indicateur clé d'inflammation active. Le suivi permet de voir si la corticothérapie (ou les approches naturelles) fait son effet.</div>
+
+    <label>Fièvre ou frissons aujourd'hui ?</label>
+    <select id="fever">
+      <option value="non">Non</option>
+      <option value="subfeb">Légère (37,2–38°)</option>
+      <option value="fievre">Fièvre (> 38°)</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌿 Intestin irritable (SII)</div>
+    <div class="card-subtitle">Le microbiome intestinal et l'inflammation sont étroitement liés</div>
+
+    <label>Transit aujourd'hui</label>
+    <select id="transit">
+      <option value="">-- Choisir --</option>
+      <option value="normal">Normal</option>
+      <option value="constipe">Constipé</option>
+      <option value="mou">Mou / pâteux</option>
+      <option value="diarrhee">Diarrhée</option>
+      <option value="alterne">Alternance</option>
+    </select>
+
+    <label>Symptômes digestifs</label>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="gut" value="ballonnements"> Ballonnements</label>
+      <label class="check-item"><input type="checkbox" name="gut" value="crampes"> Crampes</label>
+      <label class="check-item"><input type="checkbox" name="gut" value="reflux"> Reflux / brûlures</label>
+      <label class="check-item"><input type="checkbox" name="gut" value="nausees"> Nausées</label>
+      <label class="check-item"><input type="checkbox" name="gut" value="flatulences"> Flatulences</label>
+      <label class="check-item"><input type="checkbox" name="gut" value="aucun"> Aucun</label>
+    </div>
+
+    <label>Aliments consommés hier (potentiellement inflammatoires)</label>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="food" value="gluten"> Gluten</label>
+      <label class="check-item"><input type="checkbox" name="food" value="lactose"> Laitages</label>
+      <label class="check-item"><input type="checkbox" name="food" value="sucre"> Sucres raffinés</label>
+      <label class="check-item"><input type="checkbox" name="food" value="alcool"> Alcool</label>
+      <label class="check-item"><input type="checkbox" name="food" value="ultra"> Ultra-transformés</label>
+      <label class="check-item"><input type="checkbox" name="food" value="rien"> Aucun de ces items</label>
+    </div>
+    <div class="info-box">💡 Le lien intestin–inflammation est central. Une paroi intestinale fragilisée (leaky gut) peut amplifier les douleurs articulaires — c'est notamment étudié dans les maladies auto-immunes et rhumatismales.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌸 Hormones & ménopause</div>
+    <div class="card-subtitle">Les fluctuations hormonales influencent directement l'inflammation</div>
+
+    <label>Symptômes hormonaux du jour</label>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="horm" value="bouffees"> Bouffées de chaleur</label>
+      <label class="check-item"><input type="checkbox" name="horm" value="sueurs"> Sueurs nocturnes</label>
+      <label class="check-item"><input type="checkbox" name="horm" value="secheresse"> Sécheresse muqueuses</label>
+      <label class="check-item"><input type="checkbox" name="horm" value="humeur"> Sautes d'humeur</label>
+      <label class="check-item"><input type="checkbox" name="horm" value="brouillard"> Brouillard mental</label>
+      <label class="check-item"><input type="checkbox" name="horm" value="palpitations"> Palpitations</label>
+    </div>
+    <div class="info-box">💡 La chute des œstrogènes à la ménopause réduit la protection naturelle contre l'inflammation. Ce lien explique pourquoi certaines maladies comme la PPR apparaissent ou s'aggravent à cette période.</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="saveSymptoms()">💾 Enregistrer les symptômes</button>
+    <button class="btn btn-secondary" onclick="analyzeSymptoms()">🔍 Analyser les liens</button>
+  </div>
+
+  <div class="ai-response" id="symptomAnalysisBox">
+    <div class="ai-header"><div class="ai-dot"></div> Analyse des corrélations</div>
+    <div class="ai-text" id="symptomAnalysisText"></div>
+  </div>
+</div>
+
+<!-- ===== TRAITEMENTS ===== -->
+<div class="section" id="section-treatments">
+  <div class="section-title">Mes traitements</div>
+  <p class="section-intro">Une vue d'ensemble de ce que tu prends, avec des explications claires et les points de vigilance.</p>
+
+  <div class="card">
+    <div class="card-title">💊 Médication allopathique</div>
+    <div class="card-subtitle">Traitements prescrits par ton médecin</div>
+
+    <div id="alloList">
+      <div class="tip-row">
+        <div class="tip-icon">💊</div>
+        <div>
+          <strong>Corticoïdes (Prednisone / Cortancyl)</strong> — traitement de référence de la PPR<br>
+          <span style="font-size:0.79rem;color:var(--mid);">Dose actuelle :</span>
+          <input type="text" id="corticoDose" placeholder="ex : 15 mg/jour" style="margin-top:4px;">
+          <div class="warn-box" style="margin-top:8px;">⚠️ Les corticoïdes au long cours peuvent fragiliser les os, augmenter la glycémie et réduire les bonnes bactéries intestinales. Les compléments (calcium, vitamine D, magnésium, probiotiques) aident à compenser.</div>
+        </div>
+      </div>
+    </div>
+
+    <label style="margin-top:16px;">Autre médicament prescrit</label>
+    <input type="text" id="newAlloMed" placeholder="Nom du médicament">
+    <label>Dose et fréquence</label>
+    <input type="text" id="newAlloDose" placeholder="ex : 1 comprimé le matin">
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="addAlloMed()">+ Ajouter</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌿 Compléments alimentaires</div>
+    <div class="card-subtitle">Ton protocole naturel actuel</div>
+
+    <div id="compList">
+      <div class="tip-row"><div class="tip-icon">🧡</div><div><strong>Harpagophytum</strong> <span class="tag tag-sage">Anti-inflammatoire</span><br><span style="font-size:0.79rem;color:var(--mid);">Racine africaine — action sur les douleurs articulaires et la mobilité. Équivalent naturel doux des AINS.</span></div></div>
+      <div class="tip-row"><div class="tip-icon">💛</div><div><strong>Curcumine</strong> <span class="tag tag-gold">Anti-inflammatoire</span><br><span style="font-size:0.79rem;color:var(--mid);">Active sur NF-kB, voie majeure de l'inflammation. Prendre avec de la pipérine ou en forme liposomale pour l'absorption.</span></div></div>
+      <div class="tip-row"><div class="tip-icon">🍇</div><div><strong>Ribes nigrum (bourgeon)</strong> <span class="tag tag-lav">Gemmothérapie</span><br><span style="font-size:0.79rem;color:var(--mid);">Stimule naturellement les surrénales — l'organe qui produit le cortisol. Souvent surnommé "cortisone naturelle".</span></div></div>
+      <div class="tip-row"><div class="tip-icon">⚡</div><div><strong>Magnésium bisglycinate</strong> <span class="tag tag-blue">Minéral essentiel</span><br><span style="font-size:0.79rem;color:var(--mid);">Réduit la fatigue, améliore le sommeil, soutient les muscles. Forme bisglycinate = meilleure tolérance digestive.</span></div></div>
+      <div class="tip-row"><div class="tip-icon">💎</div><div><strong>Silice organique</strong> <span class="tag tag-sage">Tissu conjonctif</span><br><span style="font-size:0.79rem;color:var(--mid);">Soutient cartilage, tendons, os et peau. Favorise la régénération des tissus articulaires.</span></div></div>
+      <div class="tip-row"><div class="tip-icon">🐠</div><div><strong>Collagène marin (Naticol®)</strong> <span class="tag tag-terra">Articulaire</span><br><span style="font-size:0.79rem;color:var(--mid);">Peptides de collagène hydrolysé — soutient le cartilage et la peau. À prendre à distance des repas.</span></div></div>
+      <div class="tip-row"><div class="tip-icon">🕊️</div><div><strong>PEA — Palmitoyléthanolamide (OptiPEA® / Dynveo)</strong> <span class="tag tag-lav">Calmant cellulaire</span><br><span style="font-size:0.79rem;color:var(--mid);">Molécule naturellement produite par le corps, appartenant à la famille des endocannabinoïdes. Agit comme un "calmant" au niveau des cellules immunitaires (mastocytes, microglie) pour moduler la douleur chronique et l'inflammation neurogène — sans effets secondaires ni dépendance.</span>
+      <div class="info-box" style="margin-top:6px;font-size:0.78rem;">
+        <strong>Comment ça marche (pour les néophytes) :</strong> Imagine une alarme incendie qui se déclenche trop souvent même sans feu. Le PEA est comme un régulateur qui remet l'alarme à un niveau normal — il ne supprime pas l'immunité, il la recalibre.<br><br>
+        <strong>Pertinence dans ton profil :</strong> Particulièrement indiqué dans les douleurs chroniques articulaires, la fibromyalgie, et les situations où la neuroinflammation joue un rôle (PPR, SII, ménopause). Des études récentes montrent une synergie avec la curcumine.<br><br>
+        <strong>Forme recommandée :</strong> Micronisée ou ultra-micronisée (meilleure absorption). Standard OptiPEA® = forme de référence clinique.<br><br>
+        <strong>⚠️ À signaler à Dr. Charousset avant les injections PRP</strong> — comme tous les compléments actifs sur la coagulation/inflammation.
+      </div>
+      </div></div>
+    </div>
+
+    <label style="margin-top:16px;">Ajouter un complément</label>
+    <input type="text" id="newComp" placeholder="Nom du complément">
+    <label>Objectif / indication</label>
+    <input type="text" id="newCompIndic" placeholder="ex : soutien du microbiome">
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="addComp()">+ Ajouter</button>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="checkInteractions()">🔍 Vérifier les interactions</button>
+    </div>
+
+    <div class="ai-response" id="interactionBox">
+      <div class="ai-header"><div class="ai-dot"></div> Analyse des interactions</div>
+      <div class="ai-text" id="interactionText"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✨ Thérapies intégratives</div>
+    <div class="card-subtitle">Soins non médicamenteux en cours ou à venir</div>
+
+    <div class="tip-row">
+      <div class="tip-icon">💡</div>
+      <div>
+        <strong>Photobiomodulation (PBM)</strong> <span class="tag tag-gold">Luminothérapie cellulaire</span><br>
+        <span style="font-size:0.79rem;color:var(--mid);">Utilisation de lumière rouge et infrarouge pour stimuler la réparation cellulaire, réduire l'inflammation locale et soulager la douleur.</span>
+        <div class="info-box" style="margin-top:6px;font-size:0.78rem;">
+          <strong>Pour les néophytes :</strong> Comme des cellules qui se "rechargent" sous une lumière spécifique — la lumière active les mitochondries (les centrales énergétiques des cellules) pour accélérer la guérison.<br><br>
+          <strong>Dans ton profil :</strong> Très pertinent pour le genou (condyle fémoral, ménisque), les douleurs articulaires PPR, et la récupération post-PRP.
+        </div>
+        <label style="margin-top:8px;">Session du jour</label>
+        <input type="text" id="pbmSession" placeholder="ex : 10 min genou gauche, 830nm">
+        <label>Ressenti après</label>
+        <select id="pbmEffect">
+          <option value="">-- Choisir --</option>
+          <option value="soulagement">Soulagement notable</option>
+          <option value="leger">Léger mieux</option>
+          <option value="neutre">Pas de changement ressenti</option>
+          <option value="inconfort">Légère gêne</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="tip-row">
+      <div class="tip-icon">💉</div>
+      <div>
+        <strong>Injections PRP — Plasma Riche en Plaquettes</strong> <span class="tag tag-terra">Régénération articulaire</span><br>
+        <span style="font-size:0.79rem;color:var(--mid);">Injection de ton propre plasma concentré en facteurs de croissance, directement dans l'articulation. Stimule la régénération du cartilage et réduit l'inflammation.</span>
+        <div class="info-box" style="margin-top:6px;font-size:0.78rem;">
+          <strong>Pour les néophytes :</strong> On prélève un peu de ton sang, on le centrifuge pour concentrer les "messagers de guérison" (plaquettes), puis on les réinjecte là où le corps en a besoin.<br><br>
+          <strong>Protocole suivi :</strong> Série de 3 injections — Dr. Christophe Charousset (région parisienne).
+        </div>
+        <label style="margin-top:8px;">Date de la prochaine injection</label>
+        <input type="date" id="prpNextDate">
+        <label>Numéro de l'injection dans la série</label>
+        <select id="prpNumber">
+          <option value="">--</option>
+          <option value="1">1ère injection</option>
+          <option value="2">2ème injection</option>
+          <option value="3">3ème injection</option>
+        </select>
+        <label>Observations post-injection</label>
+        <textarea id="prpNotes" placeholder="Douleur au point d'injection, amélioration ressentie, délai d'effet…" style="min-height:60px;"></textarea>
+        <div class="warn-box" style="margin-top:6px;font-size:0.78rem;">⚠️ Suspendre les compléments anti-agrégants (oméga-3, harpagophytum, curcumine, PEA, vitamine E) 5–7 jours avant chaque injection PRP. À confirmer avec Dr. Charousset.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="tip-row">
+      <div class="tip-icon">🧘</div>
+      <div>
+        <strong>Yoga thérapeutique</strong> <span class="tag tag-sage">Anti-inflammatoire & mobilité</span><br>
+        <span style="font-size:0.79rem;color:var(--mid);">Le yoga doux agit sur l'inflammation, la mobilité articulaire, le système nerveux parasympathique (détente profonde) et l'axe intestin-cerveau.</span>
+        <div class="info-box" style="margin-top:6px;font-size:0.78rem;">
+          <strong>Postures prioritaires pour ton profil PPR :</strong> Supta Baddha Konasana (ouverture hanches allongée), Viparita Karani (jambes au mur), torsions douces assises, salutation au soleil adaptée.<br><br>
+          <strong>Études :</strong> 3×30 min/semaine réduit CRP et IL-6 de manière significative en 8–12 semaines.
+        </div>
+        <label style="margin-top:8px;">Pratique du jour</label>
+        <input type="text" id="yogaToday" placeholder="ex : 25 min yin yoga, focus hanches">
+        <label>Ressenti</label>
+        <input type="text" id="yogaFeel" placeholder="ex : épaules plus libres, moins de raideur">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="tip-row">
+      <div class="tip-icon">☯️</div>
+      <div>
+        <strong>Qi Gong</strong> <span class="tag tag-blue">Énergie vitale & fluidité</span><br>
+        <span style="font-size:0.79rem;color:var(--mid);">Discipline chinoise millénaire combinant mouvements lents, respiration et intention. Favorise la circulation du Qi (énergie vitale) et du sang, réduit le "froid et l'humidité" — causes du syndrome Bi en MTC.</span>
+        <div class="info-box" style="margin-top:6px;font-size:0.78rem;">
+          <strong>En MTC, la PPR correspond au syndrome Bi (obstruction) :</strong> le Qi et le sang ne circulent plus librement dans les méridiens. Le Qi Gong, la moxibustion et l'acupuncture visent à lever ces blocages.<br><br>
+          <strong>Séquences adaptées :</strong> Ba Duan Jin (8 pièces de brocart), Wuqinxi (5 animaux) en version douce.
+        </div>
+        <label style="margin-top:8px;">Pratique du jour</label>
+        <input type="text" id="qgToday" placeholder="ex : 15 min Ba Duan Jin, matin à jeun">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="tip-row">
+      <div class="tip-icon">➕</div>
+      <div>
+        <strong>Autre thérapie à venir</strong> <span class="tag tag-lav">À personnaliser</span><br>
+        <label style="margin-top:6px;">Nom de la thérapie</label>
+        <input type="text" id="newTherapyName" placeholder="ex : cryothérapie, acupuncture, ostéopathie…">
+        <label>Praticien / lieu</label>
+        <input type="text" id="newTherapyPrac" placeholder="ex : Dr. X, cabinet Aix-les-Bains">
+        <label>Observations</label>
+        <textarea id="newTherapyNotes" placeholder="Fréquence, objectif, effets ressentis…" style="min-height:55px;"></textarea>
+        <button class="btn btn-secondary" style="margin-top:8px;" onclick="saveNewTherapy()">+ Enregistrer cette thérapie</button>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveTherapies()">💾 Enregistrer les soins du jour</button>
+      <button class="btn btn-secondary" onclick="getTherapyInsight()">✨ Analyse de mes thérapies</button>
+    </div>
+
+    <div class="ai-response" id="therapyBox">
+      <div class="ai-header"><div class="ai-dot"></div> Analyse intégrative des thérapies</div>
+      <div class="ai-text" id="therapyText"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🍃 Phytothérapie</div>
+    <div class="card-subtitle">Plantes médicinales en cours ou à explorer</div>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="phyto" value="boswellia"> Boswellia serrata</label>
+      <label class="check-item"><input type="checkbox" name="phyto" value="gingembre"> Gingembre</label>
+      <label class="check-item"><input type="checkbox" name="phyto" value="ortie"> Ortie (racine)</label>
+      <label class="check-item"><input type="checkbox" name="phyto" value="omega3"> Oméga-3 marins</label>
+      <label class="check-item"><input type="checkbox" name="phyto" value="ashwagandha"> Ashwagandha</label>
+      <label class="check-item"><input type="checkbox" name="phyto" value="pea"> PEA (OptiPEA®)</label>
+      <label class="check-item"><input type="checkbox" name="phyto" value="probio"> Probiotiques</label>
+      <label class="check-item"><input type="checkbox" name="phyto" value="vitD"> Vitamine D3+K2</label>
+    </div>
+    <label>Notes phyto</label>
+    <textarea id="phytoNotes" placeholder="Observations, effets ressentis, dosages…"></textarea>
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="getPhytoAdvice()">✨ Conseil phyto personnalisé</button>
+
+    <div class="ai-response" id="phytoBox">
+      <div class="ai-header"><div class="ai-dot"></div> Recommandations phytothérapie</div>
+      <div class="ai-text" id="phytoText"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BIOLOGIE ===== -->
+<div class="section" id="section-biology">
+  <div class="section-title">Suivi biologique</div>
+  <p class="section-intro">Saisis ici tes résultats d'analyses au fur et à mesure. L'IA les interprète dans ton contexte global.</p>
+
+  <div class="card">
+    <div class="card-title">🔬 Marqueurs inflammatoires</div>
+    <div class="card-subtitle">Les indicateurs clés pour la PPR</div>
+
+    <table class="bio-table">
+      <tr>
+        <th>Marqueur</th>
+        <th>Valeur</th>
+        <th>Date</th>
+        <th>Signification</th>
+      </tr>
+      <tr>
+        <td><strong>VS (vitesse de sédimentation)</strong></td>
+        <td><input type="text" id="vs" placeholder="ex: 45 mm/h" style="width:100px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="vsDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td style="font-size:0.78rem;color:var(--mid);">Normal < 20 mm/h. Dans la PPR active souvent > 50.</td>
+      </tr>
+      <tr>
+        <td><strong>CRP (protéine C-réactive)</strong></td>
+        <td><input type="text" id="crp" placeholder="ex: 25 mg/L" style="width:100px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="crpDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td style="font-size:0.78rem;color:var(--mid);">Normal < 5 mg/L. Marqueur d'inflammation aiguë.</td>
+      </tr>
+      <tr>
+        <td><strong>NFS (numération formule)</strong></td>
+        <td><input type="text" id="nfs" placeholder="résumé" style="width:100px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="nfsDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td style="font-size:0.78rem;color:var(--mid);">Vérifie anémie, globules blancs, plaquettes.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌸 Hormones</div>
+    <div class="card-subtitle">Bilan hormonal de ménopause</div>
+    <table class="bio-table">
+      <tr><th>Hormone</th><th>Valeur</th><th>Date</th><th>Note</th></tr>
+      <tr>
+        <td><strong>FSH</strong></td>
+        <td><input type="text" id="fsh" placeholder="UI/L" style="width:90px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="fshDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td style="font-size:0.78rem;color:var(--mid);">Élevée en ménopause (> 30–40)</td>
+      </tr>
+      <tr>
+        <td><strong>Œstradiol (E2)</strong></td>
+        <td><input type="text" id="e2" placeholder="pg/mL" style="width:90px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="e2Date" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td style="font-size:0.78rem;color:var(--mid);">Bas en ménopause</td>
+      </tr>
+      <tr>
+        <td><strong>Vitamine D (25-OH)</strong></td>
+        <td><input type="text" id="vitD" placeholder="ng/mL" style="width:90px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="vitDDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td style="font-size:0.78rem;color:var(--mid);">Idéal > 40–60 ng/mL</td>
+      </tr>
+      <tr>
+        <td><strong>Cortisol (matin)</strong></td>
+        <td><input type="text" id="cortisol" placeholder="nmol/L" style="width:90px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="cortisolDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td style="font-size:0.78rem;color:var(--mid);">Évaluer axe surrénalien</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Autres bilans</div>
+    <table class="bio-table">
+      <tr><th>Examen</th><th>Résultat / observation</th><th>Date</th></tr>
+      <tr>
+        <td><strong>Glycémie à jeun</strong></td>
+        <td><input type="text" id="glyc" placeholder="g/L" style="width:130px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="glycDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+      </tr>
+      <tr>
+        <td><strong>Ferritine</strong></td>
+        <td><input type="text" id="ferr" placeholder="µg/L" style="width:130px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="ferrDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+      </tr>
+      <tr>
+        <td><strong>Arthroscanner / imagerie</strong></td>
+        <td><input type="text" id="imag" placeholder="résumé résultats" style="width:130px;padding:5px 8px;font-size:0.82rem;"></td>
+        <td><input type="date" id="imagDate" style="width:110px;padding:5px 8px;font-size:0.82rem;"></td>
+      </tr>
+    </table>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveBiology()">💾 Enregistrer les bilans</button>
+      <button class="btn btn-secondary" onclick="interpretBiology()">🔍 Interpréter mes résultats</button>
+    </div>
+
+    <div class="ai-response" id="bioInterpretBox">
+      <div class="ai-header"><div class="ai-dot"></div> Interprétation intégrative</div>
+      <div class="ai-text" id="bioInterpretText"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HYGIÈNE DE VIE ===== -->
+<div class="section" id="section-lifestyle">
+  <div class="section-title">Hygiène de vie</div>
+  <p class="section-intro">Alimentation anti-inflammatoire, exercices doux, et pratiques bien-être — tout est lié.</p>
+
+  <div class="card">
+    <div class="card-title">🥗 Alimentation anti-inflammatoire</div>
+    <div class="card-subtitle">Ce que tu as mangé aujourd'hui — les aliments protecteurs</div>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="legumes"> 🥦 Légumes variés (5 portions)</label>
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="poisson"> 🐟 Poisson gras (sardine, maquereau…)</label>
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="huile"> 🫒 Huile d'olive vierge</label>
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="curcuma"> 🌿 Curcuma + poivre</label>
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="fruits_rouges"> 🫐 Fruits rouges / baies</label>
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="noix"> 🥜 Noix, graines</label>
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="theverts"> 🍵 Thé vert</label>
+      <label class="check-item"><input type="checkbox" name="antiinfl" value="eau"> 💧 Bien hydratée (> 1,5 L)</label>
+    </div>
+    <label>Repas de la journée (libre)</label>
+    <textarea id="mealNote" placeholder="Ce que tu as mangé, ressenti digestif…"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧘 Exercices doux du jour</div>
+    <div class="card-subtitle">Le mouvement doux est anti-inflammatoire — même 10 minutes comptent</div>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="exo" value="yoga"> 🧘 Yoga doux / yin</label>
+      <label class="check-item"><input type="checkbox" name="exo" value="qigong"> ☯️ Qi Gong</label>
+      <label class="check-item"><input type="checkbox" name="exo" value="marche"> 🚶 Marche (> 20 min)</label>
+      <label class="check-item"><input type="checkbox" name="exo" value="stretching"> 🤸 Étirements doux</label>
+      <label class="check-item"><input type="checkbox" name="exo" value="respiration"> 🌬️ Respiration / cohérence cardiaque</label>
+      <label class="check-item"><input type="checkbox" name="exo" value="natation"> 🏊 Natation / aquagym</label>
+      <label class="check-item"><input type="checkbox" name="exo" value="rien_exo"> 😴 Repos complet</label>
+    </div>
+    <label>Durée et ressenti</label>
+    <input type="text" id="exoDuration" placeholder="ex : 25 min de yoga, corps plus souple après">
+
+    <div class="info-box" style="margin-top:12px;">💡 <strong>Yoga & PPR :</strong> Des études montrent que 30 min de yoga 3×/semaine réduit les marqueurs inflammatoires (CRP, IL-6) de manière significative en 8–12 semaines.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌙 Sommeil & récupération</div>
+    <div class="check-grid" style="grid-template-columns:1fr;">
+      <label class="check-item"><input type="checkbox" name="sleep" value="avant22h"> Couché avant 22h30</label>
+      <label class="check-item"><input type="checkbox" name="sleep" value="ecrans"> Pas d'écrans 1h avant</label>
+      <label class="check-item"><input type="checkbox" name="sleep" value="calme"> Chambre fraîche et sombre</label>
+      <label class="check-item"><input type="checkbox" name="sleep" value="reveil"> Réveil sans alarme possible</label>
+    </div>
+    <label>Heures de sommeil</label>
+    <input type="number" id="sleepHours" placeholder="ex : 7" min="0" max="12">
+
+    <div class="info-box">💡 Le sommeil est le premier médicament anti-inflammatoire naturel. Pendant le sommeil profond, le corps répare les tissus et régule les cytokines inflammatoires.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">☯️ Médecine traditionnelle</div>
+    <div class="card-subtitle">MTC et Ayurveda — ta constitution et les soins reçus</div>
+    <label>Soins MTC / Ayurveda du jour</label>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" name="trad" value="acupuncture"> 📍 Acupuncture</label>
+      <label class="check-item"><input type="checkbox" name="trad" value="moxibustion"> 🔥 Moxibustion</label>
+      <label class="check-item"><input type="checkbox" name="trad" value="huiles"> 🪔 Abhyanga (huiles)</label>
+      <label class="check-item"><input type="checkbox" name="trad" value="cryo"> ❄️ Cryothérapie</label>
+      <label class="check-item"><input type="checkbox" name="trad" value="photobio"> 💡 Photobiomodulation</label>
+      <label class="check-item"><input type="checkbox" name="trad" value="prp"> 💉 PRP (injection)</label>
+    </div>
+    <label>Observations</label>
+    <textarea id="tradNotes" placeholder="Ressentis après le soin, praticien, dose reçue…"></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="saveLifestyle()">💾 Enregistrer la journée</button>
+    <button class="btn btn-secondary" onclick="getLifestyleAdvice()">✨ Conseil du jour</button>
+  </div>
+
+  <div class="ai-response" id="lifestyleBox">
+    <div class="ai-header"><div class="ai-dot"></div> Recommandations hygiène de vie</div>
+    <div class="ai-text" id="lifestyleText"></div>
+  </div>
+</div>
+
+<!-- ===== CONSEIL IA ===== -->
+<div class="section" id="section-advisor">
+  <div class="section-title">Conseillère intégrative ✨</div>
+  <p class="section-intro">Pose une question libre à ton experte en médecine intégrative. Elle connaît ton dossier et répond de façon calme et personnalisée.</p>
+
+  <div class="card">
+    <div class="card-title">💬 Pose ta question</div>
+    <div class="card-subtitle">Interactions médicaments, plantes, biologie, alimentation, exercices, MTC, Ayurveda…</div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+      <button class="btn btn-secondary" style="font-size:0.77rem;padding:6px 12px;" onclick="setQuestion('Puis-je prendre du Boswellia avec mes corticoïdes ?')">Boswellia + corticoïdes ?</button>
+      <button class="btn btn-secondary" style="font-size:0.77rem;padding:6px 12px;" onclick="setQuestion('Quels aliments sont les plus inflammatoires pour la PPR ?')">Aliments à éviter ?</button>
+      <button class="btn btn-secondary" style="font-size:0.77rem;padding:6px 12px;" onclick="setQuestion('Comment soutenir mon microbiome intestinal avec la PPR et les corticoïdes ?')">Microbiome & corticoïdes</button>
+      <button class="btn btn-secondary" style="font-size:0.77rem;padding:6px 12px;" onclick="setQuestion('Quel protocole de yoga est adapté à la PPR pour une femme ménopausée ?')">Yoga & PPR ?</button>
+      <button class="btn btn-secondary" style="font-size:0.77rem;padding:6px 12px;" onclick="setQuestion('Quelle est la vision de la médecine chinoise sur la PPR et comment traiter ce syndrome Bi ?')">MTC & syndrome Bi</button>
+      <button class="btn btn-secondary" style="font-size:0.77rem;padding:6px 12px;" onclick="setQuestion('Comment les injections PRP peuvent aider dans mon cas articulaire ?')">PRP & articulations</button>
+    </div>
+
+    <textarea id="userQuestion" placeholder="Ta question ici… Par exemple : 'Mes douleurs sont pires le matin, est-ce normal dans la PPR ? Comment y remédier naturellement ?'" style="min-height:90px;"></textarea>
+
+    <label>Contexte actuel (optionnel, pour personnaliser)</label>
+    <input type="text" id="userContext" placeholder="ex : dose actuelle de cortisone, derniers résultats CRP, symptômes du jour…">
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="askAdvisor()">✨ Obtenir un conseil</button>
+      <button class="btn btn-secondary" onclick="clearAdvisor()">🗑 Effacer</button>
+    </div>
+
+    <div class="ai-response" id="advisorBox">
+      <div class="ai-header"><div class="ai-dot"></div> Conseillère intégrative</div>
+      <div class="ai-text" id="advisorText"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HISTORIQUE ===== -->
+<div class="section" id="section-history">
+  <div class="section-title">Historique & évolution</div>
+  <p class="section-intro">Retrouve tes entrées passées et suis ta progression dans le temps.</p>
+
+  <div class="card">
+    <div class="card-title">📊 Vue d'ensemble de ta progression</div>
+    <div id="progressSummary" style="font-size:0.84rem;color:var(--mid);padding:10px 0;">
+      Commence à enregistrer des journées pour voir ton évolution apparaître ici.
+    </div>
+  </div>
+
+  <div class="card" id="reminderBanner" style="display:none;background:linear-gradient(135deg,#fdf6e3,#f9ece7);border-color:var(--gold);">
+    <div class="card-title">⏰ Rappel de sauvegarde</div>
+    <p style="font-size:0.83rem;color:var(--charcoal);line-height:1.6;margin-bottom:12px;">
+      Il y a plus de 7 jours que tu n'as pas exporté tes données. Pense à faire une sauvegarde pour ne rien perdre 🌿
+    </p>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="exportData()">📤 Sauvegarder maintenant</button>
+      <button class="btn btn-secondary" onclick="dismissReminder()">Plus tard</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 Entrées récentes</div>
+    <div id="historyList">
+      <p style="font-size:0.84rem;color:var(--mid);padding:10px 0;">Aucune entrée pour l'instant. Commence par remplir la section "Aujourd'hui".</p>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="exportData()">📤 Exporter mes données (JSON)</button>
+      <button class="btn btn-secondary" onclick="exportCalendar()">📆 Exporter vers l'agenda</button>
+      <button class="btn btn-secondary" onclick="generateReport()">📋 Rapport pour mon médecin</button>
+    </div>
+    <div class="info-box" style="margin-top:12px;">
+      💡 <strong>Export agenda :</strong> Génère un fichier .ics avec tes rendez-vous médicaux (PRP, bilans, consultations) et tes rappels hebdomadaires de sauvegarde — s'ouvre directement dans l'app Calendrier de ton iPhone ou Mac.
+    </div>
+
+    <div class="ai-response" id="reportBox">
+      <div class="ai-header"><div class="ai-dot"></div> Rapport médical intégratif</div>
+      <div class="ai-text" id="reportText"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CLÉ API -->
+<div id="apiModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--warm-white);border-radius:20px;padding:28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--sage);margin-bottom:8px;">✨ Bienvenue</div>
+    <p style="font-size:0.84rem;color:var(--charcoal);line-height:1.7;margin-bottom:16px;">
+      Pour activer les analyses intelligentes (interactions, symptômes, biologie…), entre ta clé API Claude ci-dessous.<br><br>
+      <strong>Comment l'obtenir :</strong> Va sur <a href="https://console.anthropic.com" target="_blank" style="color:var(--sage);">console.anthropic.com</a> → crée un compte gratuit → <strong>API Keys</strong> → <strong>Create Key</strong>.
+    </p>
+    <div style="background:var(--sage-pale);border-radius:10px;padding:12px;font-size:0.78rem;color:var(--sage);margin-bottom:16px;">
+      🔒 Ta clé est sauvegardée uniquement sur ton appareil — elle ne quitte jamais ton navigateur.
+    </div>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." style="margin-bottom:12px;">
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary" style="flex:1;" onclick="saveApiKey()">Activer les analyses</button>
+      <button class="btn btn-secondary" onclick="skipApiKey()">Plus tard</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<div class="notif" id="notif"></div>
+
+<script>
+// ===== STATE =====
+let state = {
+  scores: {},
+  history: JSON.parse(localStorage.getItem('integrative_history') || '[]'),
+  biology: JSON.parse(localStorage.getItem('integrative_bio') || '{}'),
+};
+
+// ===== SYSTEM PROMPT =====
+const SYSTEM_PROMPT = `Tu es une experte internationale en médecine intégrative, naturopathie, phytothérapie, médecine traditionnelle chinoise et ayurvédique, avec une spécialisation dans la pseudo-polyarthrite rhizomélique (PPR), le syndrome de l'intestin irritable (SII), et la santé des femmes ménopausées. Tes connaissances s'appuient sur les recherches les plus récentes menées par et pour les femmes en période ménopausique.
+
+Tu accompagnes une femme de manière calme, bienveillante et précise — sans alarmisme, sans catastrophisme.
+
+Règles de réponse :
+1. Explique toujours en termes simples, accessibles à une néophyte (ajoute une explication entre parenthèses si tu utilises un terme médical)
+2. Mets en lien les différentes dimensions : symptômes, biologie, traitements, alimentation, mode de vie
+3. Propose des pistes concrètes et graduées
+4. Mentionne les interactions médicament/plante/complément si pertinent
+5. Intègre la vision MTC ou ayurvédique quand c'est utile
+6. Sois brève mais complète — max 300 mots par réponse
+7. Formate avec des sections claires en HTML simple (utilise <h4> pour les titres de section, <p> pour le texte, pas de markdown)
+8. Ne pose jamais de diagnostic — éclaire et accompagne
+
+Contexte patient : femme ménopausée, PPR diagnostiquée ou suspectée, syndrome de l'intestin irritable, région Paris/Haute-Savoie. Traitement en cours : corticoïdes, compléments (harpagophytum, curcumine, ribes nigrum, magnésium bisglycinate, silice, collagène marin). Explore les injections PRP. Pratique le yoga.`;
+
+// ===== DATE =====
+const today = new Date();
+document.getElementById('headerDate').textContent = today.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById(`section-${tab}`).classList.add('active');
+  if (tab === 'history') renderHistory();
+}
+
+// ===== SCORES =====
+function setScore(el, key, val) {
+  const dots = el.parentElement.querySelectorAll('.dot');
+  dots.forEach((d, i) => {
+    d.classList.remove('selected-0','selected-1','selected-2','selected-3');
+    if (i === val) d.classList.add(`selected-${val}`);
+  });
+  state.scores[key] = val;
+}
+
+// ===== SAVE TODAY =====
+function saveToday() {
+  const entry = {
+    date: today.toISOString().split('T')[0],
+    scores: {...state.scores},
+    note: document.getElementById('dailyNote').value,
+    timestamp: Date.now()
+  };
+  state.history.unshift(entry);
+  if (state.history.length > 90) state.history = state.history.slice(0, 90);
+  localStorage.setItem('integrative_history', JSON.stringify(state.history));
+  showNotif('✓ Journée enregistrée');
+  renderHistory();
+}
+
+function saveSymptoms() { showNotif('✓ Symptômes enregistrés'); }
+function saveBiology() {
+  const bio = {
+    vs: document.getElementById('vs').value,
+    crp: document.getElementById('crp').value,
+    vitD: document.getElementById('vitD').value,
+    date: new Date().toISOString()
+  };
+  localStorage.setItem('integrative_bio', JSON.stringify(bio));
+  showNotif('✓ Bilans enregistrés');
+}
+function saveLifestyle() { showNotif('✓ Hygiène de vie enregistrée'); }
+
+function saveTherapies() {
+  const data = {
+    pbm: document.getElementById('pbmSession').value,
+    pbmEffect: document.getElementById('pbmEffect').value,
+    prpDate: document.getElementById('prpNextDate').value,
+    prpNumber: document.getElementById('prpNumber').value,
+    prpNotes: document.getElementById('prpNotes').value,
+    yoga: document.getElementById('yogaToday').value,
+    yogaFeel: document.getElementById('yogaFeel').value,
+    qg: document.getElementById('qgToday').value,
+    date: new Date().toISOString()
+  };
+  localStorage.setItem('integrative_therapies', JSON.stringify(data));
+  showNotif('✓ Thérapies enregistrées');
+}
+
+function saveNewTherapy() {
+  const name = document.getElementById('newTherapyName').value;
+  if (!name) return;
+  showNotif('✓ Thérapie "' + name + '" enregistrée');
+  document.getElementById('newTherapyName').value = '';
+  document.getElementById('newTherapyPrac').value = '';
+  document.getElementById('newTherapyNotes').value = '';
+}
+
+function getTherapyInsight() {
+  const pbm = document.getElementById('pbmSession').value;
+  const pbmEffect = document.getElementById('pbmEffect').value;
+  const prpN = document.getElementById('prpNumber').value;
+  const prpNotes = document.getElementById('prpNotes').value;
+  const yoga = document.getElementById('yogaToday').value;
+  const qg = document.getElementById('qgToday').value;
+  callClaude(
+    `Voici mes thérapies intégratives du jour : Photobiomodulation : ${pbm || 'non renseignée'} (effet ressenti : ${pbmEffect || 'non précisé'}). PRP : injection n°${prpN || '?'} ${prpNotes ? '— ' + prpNotes : ''}. Yoga : ${yoga || 'non pratiqué'}. Qi Gong : ${qg || 'non pratiqué'}. Analyse la cohérence de ce protocole pour mon profil (PPR, genou, SII, ménopause). Y a-t-il des synergies entre ces thérapies ? Des ajustements à suggérer ?`,
+    'therapyBox', 'therapyText'
+  );
+}
+
+// ===== API KEY =====
+function getApiKey() {
+  return localStorage.getItem('integrative_api_key') || '';
+}
+
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key.startsWith('sk-ant-')) {
+    alert('La clé doit commencer par sk-ant-… Vérifie sur console.anthropic.com');
+    return;
+  }
+  localStorage.setItem('integrative_api_key', key);
+  document.getElementById('apiModal').style.display = 'none';
+  updateApiStatus();
+  showNotif('✓ Clé API activée — analyses disponibles');
+}
+
+function skipApiKey() {
+  document.getElementById('apiModal').style.display = 'none';
+}
+
+function showApiModal() {
+  document.getElementById('apiKeyInput').value = getApiKey();
+  document.getElementById('apiModal').style.display = 'flex';
+}
+
+function updateApiStatus() {
+  const badge = document.getElementById('apiStatus');
+  if (getApiKey()) {
+    badge.style.background = 'var(--sage-pale)';
+    badge.style.color = 'var(--sage)';
+    badge.textContent = '✓ IA active';
+  } else {
+    badge.style.background = '#fce4ec';
+    badge.style.color = '#880e4f';
+    badge.textContent = '⚡ IA inactive';
+  }
+}
+
+// ===== AI CALLS =====
+async function callClaude(prompt, boxId, textId) {
+  const apiKey = getApiKey();
+  const box = document.getElementById(boxId);
+  const textEl = document.getElementById(textId);
+  box.classList.add('visible');
+
+  if (!apiKey) {
+    textEl.innerHTML = '<p style="color:var(--terracotta);">⚡ Clé API non configurée — appuie sur le badge "<strong>IA inactive</strong>" en haut à droite pour l\'activer.</p>';
+    return;
+  }
+
+  textEl.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(c => c.text || '').join('') || 'Réponse indisponible.';
+    textEl.innerHTML = text;
+  } catch (e) {
+    textEl.innerHTML = '<p style="color:var(--terracotta);">Connexion temporairement indisponible. Réessaie dans un instant.</p>';
+  }
+}
+
+function getQuickInsight() {
+  const scores = state.scores;
+  const note = document.getElementById('dailyNote').value;
+  const scoreText = Object.entries(scores).map(([k,v]) => `${k}: ${v}/3`).join(', ');
+  callClaude(
+    `Aujourd'hui, voici mon ressenti (0=très bien, 3=difficile) : ${scoreText || 'non renseigné'}. Note libre : ${note || 'aucune'}. Donne-moi une analyse intégrative rapide de cette journée avec 2-3 pistes concrètes adaptées à mon profil.`,
+    'quickInsightBox', 'quickInsightText'
+  );
+}
+
+function analyzeSymptoms() {
+  const locs = [...document.querySelectorAll('[name="loc"]:checked')].map(el => el.value).join(', ');
+  const gut = [...document.querySelectorAll('[name="gut"]:checked')].map(el => el.value).join(', ');
+  const horm = [...document.querySelectorAll('[name="horm"]:checked')].map(el => el.value).join(', ');
+  const stiff = document.getElementById('stiffDuration').value;
+  callClaude(
+    `Mes symptômes aujourd'hui : douleurs en ${locs || 'non précisé'}, raideur matinale ${stiff} min, digestif : ${gut || 'rien de notable'}, hormonal : ${horm || 'rien de notable'}. Analyse les liens entre ces symptômes dans le contexte PPR + SII + ménopause. Quelles corrélations vois-tu ? Quelles actions prioritaires suggères-tu ?`,
+    'symptomAnalysisBox', 'symptomAnalysisText'
+  );
+}
+
+function checkInteractions() {
+  const phyto = [...document.querySelectorAll('[name="phyto"]:checked')].map(el => el.value).join(', ');
+  const dose = document.getElementById('corticoDose').value;
+  callClaude(
+    `Je prends des corticoïdes (${dose || 'dose non précisée'}) et les compléments suivants : harpagophytum, curcumine, ribes nigrum, magnésium bisglycinate, silice, collagène marin${phyto ? ', plus : ' + phyto : ''}. Y a-t-il des interactions à surveiller ? Certains compléments optimisent-ils les effets des corticoïdes ou au contraire les diminuent ? Explique simplement.`,
+    'interactionBox', 'interactionText'
+  );
+}
+
+function getPhytoAdvice() {
+  const phyto = [...document.querySelectorAll('[name="phyto"]:checked')].map(el => el.value).join(', ');
+  const notes = document.getElementById('phytoNotes').value;
+  callClaude(
+    `J'utilise actuellement : ${phyto || 'mon protocole de base'}. ${notes ? 'Observations : ' + notes : ''} Dans mon profil PPR + SII + ménopause, quels sont les 3 ajouts ou ajustements phytothérapiques les plus pertinents selon les données actuelles ? Intègre la vision MTC si possible.`,
+    'phytoBox', 'phytoText'
+  );
+}
+
+function interpretBiology() {
+  const vs = document.getElementById('vs').value;
+  const crp = document.getElementById('crp').value;
+  const vitD = document.getElementById('vitD').value;
+  const e2 = document.getElementById('e2').value;
+  callClaude(
+    `Mes derniers résultats biologiques : VS = ${vs || 'non renseignée'}, CRP = ${crp || 'non renseignée'}, Vitamine D = ${vitD || 'non renseignée'}, Œstradiol = ${e2 || 'non renseigné'}. Interprète ces valeurs dans mon contexte PPR + ménopause + protocole intégratif. Que me disent-ils sur l'état de mon inflammation et de mon équilibre hormonal ? Que surveiller en priorité ?`,
+    'bioInterpretBox', 'bioInterpretText'
+  );
+}
+
+function getLifestyleAdvice() {
+  const food = [...document.querySelectorAll('[name="antiinfl"]:checked')].map(el => el.value).join(', ');
+  const exo = [...document.querySelectorAll('[name="exo"]:checked')].map(el => el.value).join(', ');
+  const trad = [...document.querySelectorAll('[name="trad"]:checked')].map(el => el.value).join(', ');
+  const sleep = document.getElementById('sleepHours').value;
+  callClaude(
+    `Aujourd'hui : alimentation anti-inflammatoire : ${food || 'non précisée'}, exercices : ${exo || 'aucun'}, soins : ${trad || 'aucun'}, sommeil : ${sleep || '?'} heures. Donne-moi un retour sur cette journée et 2-3 suggestions concrètes pour optimiser mon hygiène de vie anti-inflammatoire demain.`,
+    'lifestyleBox', 'lifestyleText'
+  );
+}
+
+function askAdvisor() {
+  const q = document.getElementById('userQuestion').value;
+  const ctx = document.getElementById('userContext').value;
+  if (!q.trim()) { showNotif('Écris ta question d\'abord'); return; }
+  callClaude(
+    `${q}${ctx ? '\n\nContexte actuel : ' + ctx : ''}`,
+    'advisorBox', 'advisorText'
+  );
+}
+
+function clearAdvisor() {
+  document.getElementById('userQuestion').value = '';
+  document.getElementById('userContext').value = '';
+  document.getElementById('advisorBox').classList.remove('visible');
+}
+
+function setQuestion(q) {
+  document.getElementById('userQuestion').value = q;
+  document.getElementById('userQuestion').focus();
+}
+
+function generateReport() {
+  const recent = state.history.slice(0, 7);
+  const avgPain = recent.length ? (recent.reduce((s, e) => s + (e.scores.pain || 0), 0) / recent.length).toFixed(1) : 'N/A';
+  const bio = JSON.parse(localStorage.getItem('integrative_bio') || '{}');
+  callClaude(
+    `Génère un rapport synthétique pour mon médecin couvrant les 7 derniers jours. Score douleur moyen : ${avgPain}/3. CRP : ${bio.crp || 'N/A'}, VS : ${bio.vs || 'N/A'}, Vitamine D : ${bio.vitD || 'N/A'}. Traitement : corticoïdes + compléments (harpagophytum, curcumine, ribes nigrum, magnésium, silice, collagène). Format : rapport structuré clair pour un rhumatologue, en intégrant la perspective intégrative.`,
+    'reportBox', 'reportText'
+  );
+}
+
+// ===== ADD ITEMS =====
+function addAlloMed() {
+  const name = document.getElementById('newAlloMed').value;
+  const dose = document.getElementById('newAlloDose').value;
+  if (!name) return;
+  const list = document.getElementById('alloList');
+  const div = document.createElement('div');
+  div.className = 'tip-row';
+  div.innerHTML = `<div class="tip-icon">💊</div><div><strong>${name}</strong> — ${dose}<br><span style="font-size:0.78rem;color:var(--mid);">Ajouté manuellement</span></div>`;
+  list.appendChild(div);
+  document.getElementById('newAlloMed').value = '';
+  document.getElementById('newAlloDose').value = '';
+  showNotif('✓ Médicament ajouté');
+}
+
+function addComp() {
+  const name = document.getElementById('newComp').value;
+  const indic = document.getElementById('newCompIndic').value;
+  if (!name) return;
+  const list = document.getElementById('compList');
+  const div = document.createElement('div');
+  div.className = 'tip-row';
+  div.innerHTML = `<div class="tip-icon">🌿</div><div><strong>${name}</strong> <span class="tag tag-sage">Ajouté</span><br><span style="font-size:0.79rem;color:var(--mid);">${indic}</span></div>`;
+  list.appendChild(div);
+  document.getElementById('newComp').value = '';
+  document.getElementById('newCompIndic').value = '';
+  showNotif('✓ Complément ajouté');
+}
+
+// ===== HISTORY =====
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (!state.history.length) {
+    list.innerHTML = '<p style="font-size:0.84rem;color:var(--mid);padding:10px 0;">Aucune entrée pour l\'instant.</p>';
+    return;
+  }
+  list.innerHTML = state.history.slice(0, 10).map(e => `
+    <div class="history-item">
+      <div class="history-date">${new Date(e.date).toLocaleDateString('fr-FR', {weekday:'long',day:'numeric',month:'long'})}</div>
+      <div class="history-summary">
+        ${Object.entries(e.scores || {}).map(([k,v]) => {
+          const labels = {pain:'Douleur',stiffness:'Raideur',fatigue:'Fatigue',gut:'Transit',mood:'Humeur',sleep:'Sommeil'};
+          const colors = ['#388e3c','#f57f17','#e65100','#880e4f'];
+          return `<span style="font-size:0.78rem;color:${colors[v]||'#888'};margin-right:6px;">${labels[k]||k}: ${v}</span>`;
+        }).join('')}
+        ${e.note ? `<br><span style="font-size:0.8rem;color:var(--mid);">${e.note.slice(0,80)}${e.note.length>80?'…':''}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== REMINDER =====
+function checkSaveReminder() {
+  const lastExport = localStorage.getItem('integrative_last_export');
+  if (!lastExport) return;
+  const daysSince = (Date.now() - parseInt(lastExport)) / (1000 * 60 * 60 * 24);
+  if (daysSince >= 7) {
+    document.getElementById('reminderBanner').style.display = 'block';
+  }
+}
+
+function dismissReminder() {
+  document.getElementById('reminderBanner').style.display = 'none';
+}
+
+// ===== EXPORT CALENDAR =====
+function exportCalendar() {
+  const now = new Date();
+  const fmt = (d) => d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+
+  // Rappels sauvegarde hebdomadaires (4 semaines)
+  let events = '';
+  for (let i = 1; i <= 4; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + i * 7);
+    const uid = `backup-${i}-${Date.now()}@suivi-integratif`;
+    events += `BEGIN:VEVENT
+UID:${uid}
+DTSTAMP:${fmt(now)}
+DTSTART:${fmt(d)}
+DTEND:${fmt(new Date(d.getTime() + 30*60000))}
+SUMMARY:🌿 Sauvegarde Mon Suivi Intégratif
+DESCRIPTION:Pense à exporter tes données dans l'onglet Historique de ton app.
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Rappel sauvegarde suivi santé
+END:VALARM
+END:VEVENT\n`;
+  }
+
+  // PRP injections
+  const prpDate = document.getElementById('prpNextDate')?.value;
+  const prpNum = document.getElementById('prpNumber')?.value;
+  if (prpDate) {
+    const pd = new Date(prpDate + 'T09:00:00');
+    events += `BEGIN:VEVENT
+UID:prp-${Date.now()}@suivi-integratif
+DTSTAMP:${fmt(now)}
+DTSTART:${fmt(pd)}
+DTEND:${fmt(new Date(pd.getTime() + 60*60000))}
+SUMMARY:💉 Injection PRP n°${prpNum || '?'} — Dr. Charousset
+DESCRIPTION:⚠️ Suspendre oméga-3\\, harpagophytum\\, curcumine\\, PEA 5-7 jours avant.
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:Rappel : suspendre compléments avant PRP
+END:VALARM
+END:VEVENT\n`;
+  }
+
+  // Rappel bilan biologique mensuel
+  const bilanDate = new Date(now);
+  bilanDate.setDate(bilanDate.getDate() + 30);
+  events += `BEGIN:VEVENT
+UID:bilan-${Date.now()}@suivi-integratif
+DTSTAMP:${fmt(now)}
+DTSTART:${fmt(bilanDate)}
+DTEND:${fmt(new Date(bilanDate.getTime() + 60*60000))}
+SUMMARY:🔬 Bilan biologique — VS / CRP / NFS
+DESCRIPTION:Pense à noter tes résultats dans l'onglet Biologie de ton app.
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Rappel bilan sanguin demain
+END:VALARM
+END:VEVENT\n`;
+
+  const ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Mon Suivi Intégratif//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Mon Suivi Intégratif 🌿
+X-WR-TIMEZONE:Europe/Paris
+${events}END:VCALENDAR`;
+
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `suivi-integratif-agenda.ics`;
+  a.click();
+  showNotif('✓ Agenda exporté — ouvre le fichier pour l\'importer');
+}
+
+// ===== EXPORT =====
+function exportData() {
+  const data = {
+    history: state.history,
+    biology: JSON.parse(localStorage.getItem('integrative_bio') || '{}'),
+    exported: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `mon-suivi-integratif-${today.toISOString().split('T')[0]}.json`;
+  a.click();
+  localStorage.setItem('integrative_last_export', Date.now().toString());
+  showNotif('✓ Données exportées');
+}
+
+// ===== NOTIF =====
+function showNotif(msg) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2500);
+}
+
+// ===== INIT =====
+renderHistory();
+checkSaveReminder();
+updateApiStatus();
+if (!getApiKey()) {
+  setTimeout(() => document.getElementById('apiModal').style.display = 'flex', 800);
+}
+</script>
+</body>
+</html>
