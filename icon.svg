@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond vert sauge arrondi -->
+  <rect width="512" height="512" rx="114" fill="#7a9e7e"/>
+  <!-- Halo doux -->
+  <circle cx="256" cy="256" r="210" fill="#f7f4ef" opacity="0.12"/>
+  <!-- Feuille principale -->
+  <path d="M256 88 C328 130 378 198 378 272 C378 346 324 408 256 428 C188 408 134 346 134 272 C134 198 184 130 256 88Z" fill="#fdfcf9" opacity="0.92"/>
+  <!-- Nervure centrale -->
+  <path d="M256 108 Q254 270 256 422" stroke="#7a9e7e" stroke-width="5" fill="none" opacity="0.55"/>
+  <!-- Nervures gauches -->
+  <path d="M255 195 Q216 228 178 238" stroke="#7a9e7e" stroke-width="3" fill="none" opacity="0.45"/>
+  <path d="M255 248 Q210 274 172 282" stroke="#7a9e7e" stroke-width="3" fill="none" opacity="0.45"/>
+  <path d="M255 298 Q220 315 198 318" stroke="#7a9e7e" stroke-width="2.5" fill="none" opacity="0.38"/>
+  <!-- Nervures droites -->
+  <path d="M257 195 Q296 228 334 238" stroke="#7a9e7e" stroke-width="3" fill="none" opacity="0.45"/>
+  <path d="M257 248 Q302 274 340 282" stroke="#7a9e7e" stroke-width="3" fill="none" opacity="0.45"/>
+  <path d="M257 298 Q292 315 314 318" stroke="#7a9e7e" stroke-width="2.5" fill="none" opacity="0.38"/>
+  <!-- Cercle terracotta avec croix médicale -->
+  <circle cx="256" cy="172" r="46" fill="#c4785a"/>
+  <circle cx="256" cy="172" r="40" fill="#c4785a" opacity="0.7"/>
+  <rect x="238" y="160" width="36" height="10" rx="5" fill="white"/>
+  <rect x="251" y="147" width="10" height="36" rx="5" fill="white"/>
+  <!-- Trois points terracotta en bas -->
+  <circle cx="216" cy="372" r="11" fill="#c4785a" opacity="0.65"/>
+  <circle cx="256" cy="390" r="13" fill="#c4785a" opacity="0.85"/>
+  <circle cx="296" cy="372" r="11" fill="#c4785a" opacity="0.65"/>
+</svg>
